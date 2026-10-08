@@ -1,6 +1,6 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
-const Blog = ({ blog, setBlogs, blogs }) => {
+const Blog = ({ blog, setBlogs, blogs, username }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -41,12 +41,12 @@ const Blog = ({ blog, setBlogs, blogs }) => {
   return (
     <div>
       <p style={{ ...blogStyle, ...hideDetails }}>
-        {blog.title} {blog.author}{" "}
+        {blog.title} {blog.author}
         <button onClick={() => setViewDetails(!viewDetails)}>view</button>
       </p>
       <div style={{ ...blogStyle, ...showDetails }}>
         <p>
-          {blog.title}{" "}
+          {`${blog.title} ${blog.author}`}
           <button onClick={() => setViewDetails(!viewDetails)}>hide</button>
         </p>
         <p>{blog.url}</p>
@@ -54,7 +54,7 @@ const Blog = ({ blog, setBlogs, blogs }) => {
           likes {blog.likes}{" "}
           <button onClick={() => addLike(blog)}>likes</button>
         </p>
-        <p>{blog.author}</p>
+        <p>{username}</p>
       </div>
     </div>
   );
