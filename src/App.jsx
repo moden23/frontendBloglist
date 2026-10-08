@@ -5,6 +5,7 @@ import usersService from "./services/users";
 import loginService from "./services/login";
 import LoginForm from "./components/LoginForm";
 import AddBlogForm from "./components/AddBlogForm";
+import Togglable from "./components/Togglable";
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(() => {
@@ -19,7 +20,6 @@ const App = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
-  const [blogFormVisible, setBlogFormVisible] = useState(false);
 
   useEffect(() => {
     if (user) blogService.setToken(user.token);
@@ -107,17 +107,18 @@ const App = () => {
           <p>
             {username} logged in <button onClick={handleLogout}>logout</button>
           </p>
-          <AddBlogForm
-            setBlogFormVisible={setBlogFormVisible}
-            blogFormVisible={blogFormVisible}
-            author={author}
-            setAuthor={setAuthor}
-            title={title}
-            setTitle={setTitle}
-            url={url}
-            setUrl={setUrl}
-            addBlog={addBlog}
-          ></AddBlogForm>
+          <Togglable buttonLabel="create new blog">
+            <AddBlogForm
+              author={author}
+              setAuthor={setAuthor}
+              title={title}
+              setTitle={setTitle}
+              url={url}
+              setUrl={setUrl}
+              addBlog={addBlog}
+            />
+          </Togglable>
+
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
