@@ -1,10 +1,34 @@
-export default function LoginForm({
-  setUsername,
-  setPassword,
-  password,
-  username,
-  handleLogin,
-}) {
+import loginService from "../services/login";
+import usersService from "../services/users";
+import blogService from "../services/blogs";
+import { useState } from "react";
+export default function LoginForm({ setBlogs, setErrorMessage, setUser }) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    try {
+      console.log(username, password);
+      const user = await loginService.login({ username, password });
+      console.log(user);
+      const blogs = await usersService.getBlogsOfUser(user.id);
+      console.log(user);
+      console.log(blogs);
+      blogService.setToken(user.token);
+      window.localStorage.setItem("bloglistUser", JSON.stringify(user));
+      setBlogs(blogs);
+      setUser(user);
+      setUsername("");
+      setPassword("");
+    } catch (exception) {
+      console.log(exception);
+      setErrorMessage("wrongCredentials");
+      setTimeout(() => {
+        setErrorMessage(null);
+      }, 5000);
+    }
+  };
+
   return (
     <form onSubmit={handleLogin}>
       <label>

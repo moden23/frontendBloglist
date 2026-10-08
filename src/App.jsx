@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import usersService from "./services/users";
-import loginService from "./services/login";
 import LoginForm from "./components/LoginForm";
 import AddBlogForm from "./components/AddBlogForm";
 import Togglable from "./components/Togglable";
@@ -13,8 +12,7 @@ const App = () => {
     if (userLoggedJSON) return JSON.parse(userLoggedJSON);
     return null;
   });
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -34,30 +32,6 @@ const App = () => {
     fetchBlogs();
   }, [user]);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    try {
-      console.log(username, password);
-      const user = await loginService.login({ username, password });
-      console.log(user);
-      const blogs = await usersService.getBlogsOfUser(user.id);
-      console.log(user);
-      console.log(blogs);
-      blogService.setToken(user.token);
-      window.localStorage.setItem("bloglistUser", JSON.stringify(user));
-      setBlogs(blogs);
-      setUser(user);
-      setUsername("");
-      setPassword("");
-    } catch (exception) {
-      console.log(exception);
-      setErrorMessage("wrongCredentials");
-      setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
-    }
-  };
-
   const handleLogout = () => {
     window.localStorage.removeItem("bloglistUser");
     setUser(null);
@@ -74,18 +48,17 @@ const App = () => {
       )}
       {!user && (
         <LoginForm
-          username={username}
-          password={password}
-          setUsername={setUsername}
-          setPassword={setPassword}
-          handleLogin={handleLogin}
+          setUser={setUser}
+          setBlogs={setBlogs}
+          setErrorMessage={setErrorMessage}
         ></LoginForm>
       )}
       {user && (
         <>
           <h2>blogs</h2>
           <p>
-            {username} logged in <button onClick={handleLogout}>logout</button>
+            {user.username} logged in
+            <button onClick={handleLogout}>logout</button>
           </p>
           <Togglable buttonLabel="create new blog">
             <AddBlogForm
