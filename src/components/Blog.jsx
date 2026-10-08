@@ -38,6 +38,23 @@ const Blog = ({ blog, setBlogs, blogs, username }) => {
     }
   };
 
+  const deleteBlog = async (selectedBlog) => {
+    const deleteConfrimation = window.confirm(
+      `Remove blog ${selectedBlog.title} by ${selectedBlog.author}`,
+    );
+    if (!deleteConfrimation) return;
+
+    try {
+      const response = await blogService.remove(selectedBlog.id);
+      console.log(response);
+      if (response == 204) {
+        setBlogs(blogs.filter((blog) => blog.id != selectedBlog.id));
+      } else throw new Error(`Wrong response code ${response}`);
+    } catch (exception) {
+      console.log(exception);
+    }
+  };
+
   return (
     <div>
       <p style={{ ...blogStyle, ...hideDetails }}>
@@ -55,6 +72,7 @@ const Blog = ({ blog, setBlogs, blogs, username }) => {
           <button onClick={() => addLike(blog)}>likes</button>
         </p>
         <p>{username}</p>
+        <button onClick={() => deleteBlog(blog)}>remove</button>
       </div>
     </div>
   );

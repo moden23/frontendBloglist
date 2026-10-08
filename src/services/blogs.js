@@ -30,4 +30,13 @@ const create = async (newBlog) => {
   const respone = await axios.post(baseUrl, newBlog, config);
   return respone.data;
 };
-export default { getAll, create, add, setToken };
+
+const remove = async (blogId) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.delete(`${baseUrl}/${blogId}`, config);
+  console.log(response);
+  return response.status;
+};
+export default { getAll, create, add, setToken, remove };
