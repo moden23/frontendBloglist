@@ -17,9 +17,6 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState("");
 
   useEffect(() => {
     if (user) blogService.setToken(user.token);
@@ -67,23 +64,6 @@ const App = () => {
     console.log("n");
   };
 
-  const addBlog = async (event) => {
-    event.preventDefault();
-    try {
-      const blogNew = await blogService.create({ author, url, title });
-      setBlogs([...blogs, blogNew]);
-      setTitle("");
-      setAuthor("");
-      setUrl("");
-      setSuccessMessage(`a new blog ${title} by ${author} added`);
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, 5000);
-    } catch (exception) {
-      console.log(exception);
-    }
-  };
-
   return (
     <div>
       {errorMessage && (
@@ -109,13 +89,9 @@ const App = () => {
           </p>
           <Togglable buttonLabel="create new blog">
             <AddBlogForm
-              author={author}
-              setAuthor={setAuthor}
-              title={title}
-              setTitle={setTitle}
-              url={url}
-              setUrl={setUrl}
-              addBlog={addBlog}
+              setSuccessMessage={setSuccessMessage}
+              blogs={blogs}
+              setBlogs={setBlogs}
             />
           </Togglable>
 
