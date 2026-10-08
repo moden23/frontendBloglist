@@ -4,16 +4,14 @@ import blogService from "./services/blogs";
 import usersService from "./services/users";
 import loginService from "./services/login";
 import LoginForm from "./components/LoginForm";
-import AddTokenForm from "./components/AddTokenForm";
+import AddBlogForm from "./components/AddBlogForm";
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-
   const [user, setUser] = useState(() => {
     const userLoggedJSON = window.localStorage.getItem("bloglistUser");
     if (userLoggedJSON) return JSON.parse(userLoggedJSON);
     return null;
   });
-
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -21,6 +19,7 @@ const App = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+  const [blogFormVisible, setBlogFormVisible] = useState(false);
 
   useEffect(() => {
     if (user) blogService.setToken(user.token);
@@ -108,7 +107,9 @@ const App = () => {
           <p>
             {username} logged in <button onClick={handleLogout}>logout</button>
           </p>
-          <AddTokenForm
+          <AddBlogForm
+            setBlogFormVisible={setBlogFormVisible}
+            blogFormVisible={blogFormVisible}
             author={author}
             setAuthor={setAuthor}
             title={title}
@@ -116,7 +117,7 @@ const App = () => {
             url={url}
             setUrl={setUrl}
             addBlog={addBlog}
-          ></AddTokenForm>
+          ></AddBlogForm>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
