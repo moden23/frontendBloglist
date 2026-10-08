@@ -8,12 +8,9 @@ export default function LoginForm({ setBlogs, setErrorMessage, setUser }) {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      console.log(username, password);
       const user = await loginService.login({ username, password });
-      console.log(user);
       const blogs = await usersService.getBlogsOfUser(user.id);
-      console.log(user);
-      console.log(blogs);
+
       blogService.setToken(user.token);
       window.localStorage.setItem("bloglistUser", JSON.stringify(user));
       setBlogs(blogs);
