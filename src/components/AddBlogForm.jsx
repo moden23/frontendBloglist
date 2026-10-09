@@ -23,7 +23,7 @@ export default function AddTokenForm({ setSuccessMessage, setBlogs, blogs }) {
   };
 
   return (
-    <form id="blog-add-form" onSubmit={addBlog}>
+    <form id="blog-add-form" className="blog-add-form" onSubmit={addBlog}>
       <p>create new</p>
       <label htmlFor="title">title</label>
       <input

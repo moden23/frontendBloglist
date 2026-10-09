@@ -17,16 +17,7 @@ const Blog = ({ blog, setBlogs, blogs, username }) => {
   const addLike = async (blog) => {
     try {
       blog.likes += 1;
-      console.log(blog);
       const updatedBlog = await blogService.add(blog);
-      console.log(updatedBlog);
-
-      console.log(
-        blogs.map((blog) => {
-          if (blog.id === updatedBlog.id) return updatedBlog;
-          return blog;
-        }),
-      );
       setBlogs(
         blogs.map((blog) => {
           if (blog.id === updatedBlog.id) return updatedBlog;
@@ -46,7 +37,6 @@ const Blog = ({ blog, setBlogs, blogs, username }) => {
 
     try {
       const response = await blogService.remove(selectedBlog.id);
-      console.log(response);
       if (response == 204) {
         setBlogs(blogs.filter((blog) => blog.id != selectedBlog.id));
       } else throw new Error(`Wrong response code ${response}`);
@@ -56,7 +46,7 @@ const Blog = ({ blog, setBlogs, blogs, username }) => {
   };
 
   return (
-    <div>
+    <div className="blog">
       <p style={{ ...blogStyle, ...hideDetails }}>
         {blog.title} {blog.author}
         <button onClick={() => setViewDetails(!viewDetails)}>view</button>
@@ -66,10 +56,10 @@ const Blog = ({ blog, setBlogs, blogs, username }) => {
           {`${blog.title} ${blog.author}`}
           <button onClick={() => setViewDetails(!viewDetails)}>hide</button>
         </p>
-        <p>{blog.url}</p>
-        <p>
-          likes {blog.likes}{" "}
-          <button onClick={() => addLike(blog)}>likes</button>
+        <p className="url">{blog.url}</p>
+        <p className="likes">
+          likes {blog.likes}
+          <button onClick={() => addLike(blog)}>like</button>
         </p>
         <p>{username}</p>
         <button onClick={() => deleteBlog(blog)}>remove</button>

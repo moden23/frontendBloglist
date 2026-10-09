@@ -79,7 +79,6 @@ const App = () => {
               />
             ))
             .toSorted((blogfirst, blogsecond) => {
-              console.log(blogfirst.props.blog, blogsecond.props.blog);
               return blogsecond.props.blog.likes - blogfirst.props.blog.likes;
             })}
         </>
