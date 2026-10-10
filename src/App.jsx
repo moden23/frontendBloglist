@@ -38,6 +38,22 @@ const App = () => {
     console.log("n");
   };
 
+  const addBlog = async (blogObject) => {
+    try {
+      const blogNew = await blogService.create(blogObject);
+      setBlogs([...blogs, blogNew]);
+
+      setSuccessMessage(
+        `a new blog ${blogObject.title} by ${blogObject.author} added`,
+      );
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 5000);
+    } catch (exception) {
+      console.log(exception);
+    }
+  };
+
   return (
     <div>
       {errorMessage && (
@@ -61,11 +77,7 @@ const App = () => {
             <button onClick={handleLogout}>logout</button>
           </p>
           <Togglable buttonLabel="create new blog">
-            <AddBlogForm
-              setSuccessMessage={setSuccessMessage}
-              blogs={blogs}
-              setBlogs={setBlogs}
-            />
+            <AddBlogForm addBlog={addBlog} />
           </Togglable>
 
           {blogs

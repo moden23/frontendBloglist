@@ -1,29 +1,19 @@
 import { useState } from "react";
-import blogService from "../services/blogs";
-export default function AddTokenForm({ setSuccessMessage, setBlogs, blogs }) {
+export default function AddTokenForm({ addBlog }) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
 
-  const addBlog = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const blogNew = await blogService.create({ author, url, title });
-      setBlogs([...blogs, blogNew]);
-      setTitle("");
-      setAuthor("");
-      setUrl("");
-      setSuccessMessage(`a new blog ${title} by ${author} added`);
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, 5000);
-    } catch (exception) {
-      console.log(exception);
-    }
+    await addBlog({ title, author, url });
+    setTitle("");
+    setAuthor("");
+    setUrl("");
   };
 
   return (
-    <form id="blog-add-form" className="blog-add-form" onSubmit={addBlog}>
+    <form id="blog-add-form" className="blog-add-form" onSubmit={handleSubmit}>
       <p>create new</p>
       <label htmlFor="title">title</label>
       <input

@@ -12,12 +12,21 @@ export default function Togglable(props) {
 
   return (
     <>
-      <button style={hideForm} onClick={toggleVisibility}>
+      <button
+        className="create-new-blog"
+        style={hideForm}
+        onClick={toggleVisibility}
+      >
         {props.buttonLabel}
       </button>
       <div style={showForm}>
         {props.children}
-        <button type="submit" onClick={toggleVisibility} form="blog-add-form">
+        <button
+          className="create"
+          type="submit"
+          onClick={toggleVisibility}
+          form="blog-add-form"
+        >
           create
         </button>
         <button type="button" onClick={toggleVisibility}>
