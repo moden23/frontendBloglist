@@ -88,6 +88,7 @@ const App = () => {
                 blogs={blogs}
                 setBlogs={setBlogs}
                 blog={blog}
+                setSuccessMessage={setSuccessMessage}
               />
             ))
             .toSorted((blogfirst, blogsecond) => {

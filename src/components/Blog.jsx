@@ -1,6 +1,6 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
-const Blog = ({ blog, setBlogs, blogs, username }) => {
+const Blog = ({ blog, setBlogs, blogs, username, setSuccessMessage }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -39,6 +39,7 @@ const Blog = ({ blog, setBlogs, blogs, username }) => {
       const response = await blogService.remove(selectedBlog.id);
       if (response == 204) {
         setBlogs(blogs.filter((blog) => blog.id != selectedBlog.id));
+        setSuccessMessage(null);
       } else throw new Error(`Wrong response code ${response}`);
     } catch (exception) {
       console.log(exception);

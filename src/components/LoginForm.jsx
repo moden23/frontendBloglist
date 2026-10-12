@@ -29,7 +29,7 @@ export default function LoginForm({ setBlogs, setErrorMessage, setUser }) {
   return (
     <form onSubmit={handleLogin}>
       <label>
-        userusername
+        username
         <input
           type="text"
           onChange={({ target }) => setUsername(target.value)}
