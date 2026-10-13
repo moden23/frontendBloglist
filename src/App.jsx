@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
-import usersService from "./services/users";
 import LoginForm from "./components/LoginForm";
 import AddBlogForm from "./components/AddBlogForm";
 import Togglable from "./components/Togglable";
@@ -12,7 +11,6 @@ const App = () => {
     if (userLoggedJSON) return JSON.parse(userLoggedJSON);
     return null;
   });
-
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -24,8 +22,7 @@ const App = () => {
     const fetchBlogs = async () => {
       const userLoggedJSON = window.localStorage.getItem("bloglistUser");
       if (userLoggedJSON) {
-        const user = JSON.parse(userLoggedJSON);
-        const blogs = await usersService.getBlogsOfUser(user.id);
+        const blogs = await blogService.getAll();
         setBlogs(blogs);
       }
     };
@@ -35,7 +32,6 @@ const App = () => {
   const handleLogout = () => {
     window.localStorage.removeItem("bloglistUser");
     setUser(null);
-    console.log("n");
   };
 
   const addBlog = async (blogObject) => {
@@ -79,7 +75,6 @@ const App = () => {
           <Togglable buttonLabel="create new blog">
             <AddBlogForm addBlog={addBlog} />
           </Togglable>
-
           {blogs
             .map((blog) => (
               <Blog

@@ -1,5 +1,4 @@
 import loginService from "../services/login";
-import usersService from "../services/users";
 import blogService from "../services/blogs";
 import { useState } from "react";
 export default function LoginForm({ setBlogs, setErrorMessage, setUser }) {
@@ -9,12 +8,12 @@ export default function LoginForm({ setBlogs, setErrorMessage, setUser }) {
     event.preventDefault();
     try {
       const user = await loginService.login({ username, password });
-      const blogs = await usersService.getBlogsOfUser(user.id);
-
       blogService.setToken(user.token);
-      window.localStorage.setItem("bloglistUser", JSON.stringify(user));
+      const blogs = await blogService.getAll();
+
       setBlogs(blogs);
       setUser(user);
+      window.localStorage.setItem("bloglistUser", JSON.stringify(user));
       setUsername("");
       setPassword("");
     } catch (exception) {

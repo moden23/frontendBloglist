@@ -5,5 +5,9 @@ const getBlogsOfUser = async (userId) => {
   const response = await axios.get(`${baseUrl}/${userId}`);
   return response.data.blogs;
 };
+const getCreatorUsername = async (userId) => {
+  const response = await axios.get(`${baseUrl}/${userId}`);
+  return response.data.username;
+};
 
-export default { getBlogsOfUser };
+export default { getCreatorUsername };
