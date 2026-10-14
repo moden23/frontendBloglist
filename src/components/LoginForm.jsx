@@ -10,7 +10,7 @@ export default function LoginForm({ setBlogs, setErrorMessage, setUser }) {
       const user = await loginService.login({ username, password });
       blogService.setToken(user.token);
       const blogs = await blogService.getAll();
-
+      console.log(blogs);
       setBlogs(blogs);
       setUser(user);
       window.localStorage.setItem("bloglistUser", JSON.stringify(user));

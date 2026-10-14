@@ -36,6 +36,7 @@ const Blog = ({ blog, setBlogs, blogs, username, setSuccessMessage }) => {
     if (!deleteConfrimation) return;
 
     try {
+      console.log(selectedBlog);
       const response = await blogService.remove(selectedBlog.id);
       if (response == 204) {
         setBlogs(blogs.filter((blog) => blog.id != selectedBlog.id));
@@ -49,7 +50,7 @@ const Blog = ({ blog, setBlogs, blogs, username, setSuccessMessage }) => {
   return (
     <div className="blog">
       <p style={{ ...blogStyle, ...hideDetails }}>
-        {blog.title} {blog.author}
+        {`${blog.title} ${blog.author}`}
         <button onClick={() => setViewDetails(!viewDetails)}>view</button>
       </p>
       <div style={{ ...blogStyle, ...showDetails }}>

@@ -17,8 +17,9 @@ const add = async (updatedBlog) => {
   const config = {
     headers: { Authorization: token },
   };
+  console.log(updatedBlog);
   const respone = await axios.put(
-    `${baseUrl}/${updatedBlog._id}`,
+    `${baseUrl}/${updatedBlog.id}`,
     updatedBlog,
     config,
   );

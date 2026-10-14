@@ -24,10 +24,11 @@ const App = () => {
       if (userLoggedJSON) {
         const blogs = await blogService.getAll();
         setBlogs(blogs);
+        console.log("mpainei sto effect");
       }
     };
     fetchBlogs();
-  }, [user]);
+  }, []);
 
   const handleLogout = () => {
     window.localStorage.removeItem("bloglistUser");
