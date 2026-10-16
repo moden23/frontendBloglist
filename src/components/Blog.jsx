@@ -48,7 +48,7 @@ const Blog = ({ blog, setBlogs, blogs, username, setSuccessMessage }) => {
   };
 
   return (
-    <div className="blog">
+    <li className="blog">
       <p style={{ ...blogStyle, ...hideDetails }}>
         {`${blog.title} ${blog.author}`}
         <button onClick={() => setViewDetails(!viewDetails)}>view</button>
@@ -66,7 +66,7 @@ const Blog = ({ blog, setBlogs, blogs, username, setSuccessMessage }) => {
         <p>{username}</p>
         <button onClick={() => deleteBlog(blog)}>remove</button>
       </div>
-    </div>
+    </li>
   );
 };
 

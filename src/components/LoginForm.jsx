@@ -1,21 +1,23 @@
 import loginService from "../services/login";
 import blogService from "../services/blogs";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 export default function LoginForm({ setBlogs, setErrorMessage, setUser }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
       const user = await loginService.login({ username, password });
       blogService.setToken(user.token);
       const blogs = await blogService.getAll();
-      console.log(blogs);
       setBlogs(blogs);
       setUser(user);
       window.localStorage.setItem("bloglistUser", JSON.stringify(user));
       setUsername("");
       setPassword("");
+      navigate("/");
     } catch (exception) {
       console.log(exception);
       setErrorMessage("wrongCredentials");

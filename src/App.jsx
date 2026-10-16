@@ -1,4 +1,11 @@
 import { useState, useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+} from "react-router-dom";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import LoginForm from "./components/LoginForm";
@@ -13,6 +20,7 @@ const App = () => {
   });
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (user) blogService.setToken(user.token);
@@ -33,6 +41,7 @@ const App = () => {
   const handleLogout = () => {
     window.localStorage.removeItem("bloglistUser");
     setUser(null);
+    navigate("/");
   };
 
   const addBlog = async (blogObject) => {
@@ -52,47 +61,75 @@ const App = () => {
   };
 
   return (
-    <div>
-      {errorMessage && (
-        <p style={{ color: "red", borderColor: "red" }}>{errorMessage}</p>
-      )}
-      {successMessage && (
-        <p style={{ color: "green", borderColor: "green" }}>{successMessage}</p>
-      )}
-      {!user && (
-        <LoginForm
-          setUser={setUser}
-          setBlogs={setBlogs}
-          setErrorMessage={setErrorMessage}
-        ></LoginForm>
-      )}
-      {user && (
-        <>
-          <h2>blogs</h2>
-          <p>
-            {user.username} logged in
-            <button onClick={handleLogout}>logout</button>
-          </p>
-          <Togglable buttonLabel="create new blog">
-            <AddBlogForm addBlog={addBlog} />
-          </Togglable>
-          {blogs
-            .map((blog) => (
-              <Blog
-                username={user?.username}
-                key={blog.id}
-                blogs={blogs}
-                setBlogs={setBlogs}
-                blog={blog}
-                setSuccessMessage={setSuccessMessage}
-              />
-            ))
-            .toSorted((blogfirst, blogsecond) => {
-              return blogsecond.props.blog.likes - blogfirst.props.blog.likes;
-            })}
-        </>
-      )}
-    </div>
+    <>
+      <div>
+        <Link to="/">blogs</Link>
+        {user ? (
+          <button onClick={handleLogout}>logout</button>
+        ) : (
+          <Link to="/login">login</Link>
+        )}
+        <Link></Link>
+      </div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            user && (
+              <>
+                <h2>blogs</h2>
+                <p>{user.username} logged in</p>
+                <Togglable buttonLabel="create new blog">
+                  <AddBlogForm addBlog={addBlog} />
+                </Togglable>
+                <ul>
+                  {blogs
+                    .map((blog) => (
+                      <Blog
+                        username={user?.username}
+                        key={blog.id}
+                        blogs={blogs}
+                        setBlogs={setBlogs}
+                        blog={blog}
+                        setSuccessMessage={setSuccessMessage}
+                      />
+                    ))
+                    .toSorted((blogfirst, blogsecond) => {
+                      return (
+                        blogsecond.props.blog.likes - blogfirst.props.blog.likes
+                      );
+                    })}
+                </ul>
+              </>
+            )
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <div>
+              {errorMessage && (
+                <p style={{ color: "red", borderColor: "red" }}>
+                  {errorMessage}
+                </p>
+              )}
+              {successMessage && (
+                <p style={{ color: "green", borderColor: "green" }}>
+                  {successMessage}
+                </p>
+              )}
+              {!user && (
+                <LoginForm
+                  setUser={setUser}
+                  setBlogs={setBlogs}
+                  setErrorMessage={setErrorMessage}
+                ></LoginForm>
+              )}
+            </div>
+          }
+        />
+      </Routes>
+    </>
   );
 };
 
